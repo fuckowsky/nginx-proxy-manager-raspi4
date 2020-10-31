@@ -1,0 +1,24 @@
+version: "3"
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./config.json:/app/config/production.json
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+  npmdb:
+    image: yobasystems/alpine-mariadb:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: npmdb
+      MYSQL_DATABASE: npmdb
+      MYSQL_USER: npmdb
+      MYSQL_PASSWORD: npmdb
+    volumes:
+      - /srv/dev-disk-by-label-Files/Config/NGINXDB:/var/lib/mysql
+    expose:
+      - '3306'
