@@ -1,15 +1,21 @@
-version: '3'
+version: "3"
 services:
   app:
-    image: "jc21/nginx-proxy-manager:latest"
-    restart: always
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
-      - "81:81"
+      # Public HTTP Port:
+      - '80:80'
+      # Public HTTPS Port:
+      - '443:443'
+      # Admin Web Port:
+      - '81:81'
     environment:
+      # If you would rather use Sqlite uncomment this
+      # and remove all DB_MYSQL_* lines above
       DB_SQLITE_FILE: "/data/database.sqlite"
-      DISABLE_IPV6: "true"
+      # Uncomment this if IPv6 is not enabled on your host
+      DISABLE_IPV6: 'true'
     volumes:
-      - ./data:/data
+      - ./data/nginx-proxy-manager:/data
       - ./letsencrypt:/etc/letsencrypt
